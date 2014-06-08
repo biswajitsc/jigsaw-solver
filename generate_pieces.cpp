@@ -110,7 +110,11 @@ int main(int argc, char* argv[])
     int height,width,n;
     CvScalar pix;
     img=cvLoadImage(argv[1]);
-
+    if(img==0)
+    {
+        cout<<argv[1]<<": File not found."<<endl;
+        exit(1);
+    }
     cout<<"Image dimensions: "<<img->height<<" "<<img->width<<endl;
     cout<<"Enter side length of square grid: ";
     cin>>n;
