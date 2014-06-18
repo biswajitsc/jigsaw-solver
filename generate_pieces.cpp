@@ -67,7 +67,7 @@ int main(int argc, char* argv[])
     }
 
     cout<<"Image dimensions: "<<img->height<<" "<<img->width<<endl;
-    cout<<"Enter side length of square grid: ";
+    cout<<"Enter side length of square piece: ";
     scanf("%d",&len);
     
     if(len<1)

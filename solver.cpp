@@ -16,6 +16,7 @@
 #include <cmath>
 
 #include "image.hpp"
+#include "MST_solver.cpp"
 
 using namespace std;
 
@@ -46,25 +47,25 @@ vector<int> bbl, bbr, bbt, bbd;
 Block* block;
 Block dull;
 
-struct edges
-{
-  int i,j,id;
-  double weight;
-  bool operator <(const edges & x)const
-  {
-    return this->weight>x.weight;
-  }
-};
+// struct edges
+// {
+//   int i,j,id;
+//   double weight;
+//   bool operator <(const edges & x)const
+//   {
+//     return this->weight>x.weight;
+//   }
+// };
 
-struct data
-{
-  int cc;
-  int id;
-  bool operator <(const data &x)const
-  {
-    return this->cc > x.cc;
-  }
-};
+// struct data
+// {
+//   int cc;
+//   int id;
+//   bool operator <(const data &x)const
+//   {
+//     return this->cc > x.cc;
+//   }
+// };
 
 void initializeVector(int n)
 {
@@ -270,9 +271,6 @@ void insertInBottomMatrix(int height,int width)
   }
 }
 
-int xx[]={0,1,0,-1};
-int yy[]={1,0,-1,0};
-
 double getWeight(vector<Block> &c, int k, Block b)
 {
   double ans=0;
@@ -453,28 +451,28 @@ void saveResult(vector<Block> &ans,int height,int width,const char *output)
   cvSaveImage(output,final);
 }
 
-edges asign(const int  i,const int j,const int id,const double w)
-{
-  edges temp;
-  temp.i = i,temp.j = j,temp.id = id,temp.weight = w;
-  assert(i>=0 && i<X);
-  assert(j>=0 && j<X);
-  assert(id>=0 && id<4);
-  return temp;
-}
+// edges asign(const int  i,const int j,const int id,const double w)
+// {
+//   edges temp;
+//   temp.i = i,temp.j = j,temp.id = id,temp.weight = w;
+//   assert(i>=0 && i<X);
+//   assert(j>=0 && j<X);
+//   assert(id>=0 && id<4);
+//   return temp;
+// }
 
-void debug_edge(edges q)
-{
-  printf("\n %d %d %d %lf",q.i,q.j,q.id,q.weight);
-}
+// void debug_edge(edges q)
+// {
+//   printf("\n %d %d %d %lf",q.i,q.j,q.id,q.weight);
+// }
 
-data asign_data(int c,int i)
-{
-  data temp;
-  temp.cc = c;
-  temp.id = i;
-  return temp;
-}
+// data asign_data(int c,int i)
+// {
+//   data temp;
+//   temp.cc = c;
+//   temp.id = i;
+//   return temp;
+// }
 
 
 double fitness(vector<Block> &c)
@@ -609,184 +607,184 @@ void testing(vector<Block> ans,const char *output,bool fill)
 }
 
 
-void fill_greedy(vector<Block> &ans,bool *used)
-{
-int CC[X];
-int a,bb,a1,b1;
-data top;
-int ind;
-double matemp,ma;
+// void fill_greedy(vector<Block> &ans,bool *used)
+// {
+// int CC[X];
+// int a,bb,a1,b1;
+// data top;
+// int ind;
+// double matemp,ma;
 
-for(int i=0;i<X;i++)
-  CC[i] = 0;
+// for(int i=0;i<X;i++)
+//   CC[i] = 0;
 
-for(int i=0;i<X;i++)
-{
-  a=i/N,bb=i%N;
+// for(int i=0;i<X;i++)
+// {
+//   a=i/N,bb=i%N;
 
-  for(int j=0;j<4;j++)
-  {
-    a1=a+xx[j],b1=bb+yy[j];
-    if(a1<0||a1>=N) continue;
-    if(b1<0||b1>=N) continue;
-    if(ans[a1*N+b1].idx!=-1)
-      CC[i]++;
-  }
-}
-priority_queue<data> Q;
-for(int i=0;i<X;i++)if(!used[ans[i].idx])
-  Q.push(asign_data(CC[i],i));
+//   for(int j=0;j<4;j++)
+//   {
+//     a1=a+xx[j],b1=bb+yy[j];
+//     if(a1<0||a1>=N) continue;
+//     if(b1<0||b1>=N) continue;
+//     if(ans[a1*N+b1].idx!=-1)
+//       CC[i]++;
+//   }
+// }
+// priority_queue<data> Q;
+// for(int i=0;i<X;i++)if(!used[ans[i].idx])
+//   Q.push(asign_data(CC[i],i));
 
-while(Q.size())
-{
-  top = Q.top();
-  Q.pop();
-  if(ans[top.id].idx!=-1) 
-    continue;
-  ind=-1;
-  ma = 0;
-  for(int i=0;i<X;i++)
-    if(!used[i])
-    {
-      matemp=getWeight(ans,top.id,block[i]);
-      if(ind==-1||ma>matemp) ind=i,ma=matemp;
-    }
+// while(Q.size())
+// {
+//   top = Q.top();
+//   Q.pop();
+//   if(ans[top.id].idx!=-1) 
+//     continue;
+//   ind=-1;
+//   ma = 0;
+//   for(int i=0;i<X;i++)
+//     if(!used[i])
+//     {
+//       matemp=getWeight(ans,top.id,block[i]);
+//       if(ind==-1||ma>matemp) ind=i,ma=matemp;
+//     }
 
-    a=top.id/N,bb=top.id%N;
-    for(int j=0;j<4;j++)
-    {
-      a1=a+xx[j],b1=bb+yy[j];
-      if(a1<0||a1>=N) continue;
-      if(b1<0||b1>=N) continue;
-      if(ans[a1*N+b1].idx==-1)
-      {
-        CC[a1*N+b1]++;
-        Q.push(asign_data(CC[a1*N+b1],a1*N+b1)); 
-      }
-    }
+//     a=top.id/N,bb=top.id%N;
+//     for(int j=0;j<4;j++)
+//     {
+//       a1=a+xx[j],b1=bb+yy[j];
+//       if(a1<0||a1>=N) continue;
+//       if(b1<0||b1>=N) continue;
+//       if(ans[a1*N+b1].idx==-1)
+//       {
+//         CC[a1*N+b1]++;
+//         Q.push(asign_data(CC[a1*N+b1],a1*N+b1)); 
+//       }
+//     }
 
-    ans[top.id] = block[ind]; 
-    used[ind] =1;
+//     ans[top.id] = block[ind]; 
+//     used[ind] =1;
 
-  }
-}
-
-
-vector<Block> mst(int height,int width)
-{
-int u,v,u1,v1,ma;
-vector<Block> ans;
-edges temp;
-priority_queue<edges> Q;
-while(Q.size())
-  Q.pop();
-
-int ind=1;
-bool used[X];
-
-for(int i=0;i<X;i++) used[i]=0;
-  vector<pii > cood;
-set<pii> S;
-for(int i=0;i<X;i++) cood.pb(make_pair(INF,INF));
+//   }
+// }
 
 
-  ans.pb(block[ind]);
-used[ind]=1;
-cood[ind]=pii(0,0);
-S.insert(pii(0,0));
+// vector<Block> mst(int height,int width)
+// {
+// int u,v,u1,v1,ma;
+// vector<Block> ans;
+// edges temp;
+// priority_queue<edges> Q;
+// while(Q.size())
+//   Q.pop();
 
-for(int i=0;i<X;i++) 
-  if(i!=ind)
-  {
-    Q.push(asign(ind,i,R,adjr[ind][i]));
+// int ind=1;
+// bool used[X];
 
-    Q.push(asign(ind,i,L,adjl[ind][i]));
-
-    Q.push(asign(ind,i,T,adjt[ind][i]));
-
-    Q.push(asign(ind,i,D,adjd[ind][i]));
-  }
-
-  int cc=0;
-  edges ttop;
-  while(ans.size()<X && !Q.empty())
-  {
-    cc++;
-    ttop=Q.top();
-    Q.pop();
-
-    u=cood[ttop.i].first;
-    v=cood[ttop.i].second;
-
-    u1=u;
-    v1=v;
-    if(ttop.id==R) v1++;
-    if(ttop.id==L) v1--;
-    if(ttop.id==T) u1--;
-    if(ttop.id==D) u1++;
-
-// printf("\n %d %d *",u1,v1);
-    if(S.find(pii(u1,v1))!=S.end()) 
-      continue;
-    if(used[ttop.j])
-      continue;
-// printf("%d-->%d %d",ttop.i,ttop.j,ttop.id);
-    S.insert(pii(u1,v1));
-    ans.pb(block[ttop.j]);
-    used[ttop.j]=1;
-    cood[ttop.j] = pii(u1,v1);
-    for(int i=0;i<X;i++) if(!used[i])
-    {
-      Q.push(asign(ttop.j,i,R,adjr[ttop.j][i]));
-
-      Q.push(asign(ttop.j,i,L,adjl[ttop.j][i]));
-
-      Q.push(asign(ttop.j,i,T,adjt[ttop.j][i]));
-
-      Q.push(asign(ttop.j,i,D,adjd[ttop.j][i]));
-    }
-  }
-//printf("\n %d",(int)ans.size());
-  ans.clear();
-  ind=-1,ma=0;
-  for(int i=0;i<X;i++)
-  {
-    int x=cood[i].first;
-    int y=cood[i].second;
-    int cnt=0;
-    for(int j=0;j<X;j++) if(i!=j)
-    {
-      if(0<=cood[j].first-x&&0<=cood[j].second-y)
-        if(N>cood[j].first-x&&N>cood[j].second-y)
-          cnt++;
-      }
-      if(ind==-1||ma<cnt) ind=i,ma=cnt;
-    }
-
-    ans.resize(X);
-    for(int i=0;i<X;i++) used[i]=0,ans[i] = dull,ans[i].idx=-1;
-      int x=cood[ind].first;
-    int y=cood[ind].second;
-
-    for(int i=0;i<X;i++)
-    {
-      if(0<=cood[i].first-x&&0<=cood[i].second-y)
-        if(N>cood[i].first-x&&N>cood[i].second-y)
-        {
-          used[i]=1;
-          int aa=cood[i].first-x;
-          int bb=cood[i].second-y;
-          ans[aa*N+bb]=block[i];
-        }
-      }
+// for(int i=0;i<X;i++) used[i]=0;
+//   vector<pii > cood;
+// set<pii> S;
+// for(int i=0;i<X;i++) cood.pb(make_pair(INF,INF));
 
 
-//testing(ans,"testit.txt",false);
-saveResult(ans,height,width,"finala.jpg");
- fill_greedy(ans,used);
-//testing(ans,"testit.txt",true);
-      return ans;
-    }
+//   ans.pb(block[ind]);
+// used[ind]=1;
+// cood[ind]=pii(0,0);
+// S.insert(pii(0,0));
+
+// for(int i=0;i<X;i++) 
+//   if(i!=ind)
+//   {
+//     Q.push(asign(ind,i,R,adjr[ind][i]));
+
+//     Q.push(asign(ind,i,L,adjl[ind][i]));
+
+//     Q.push(asign(ind,i,T,adjt[ind][i]));
+
+//     Q.push(asign(ind,i,D,adjd[ind][i]));
+//   }
+
+//   int cc=0;
+//   edges ttop;
+//   while(ans.size()<X && !Q.empty())
+//   {
+//     cc++;
+//     ttop=Q.top();
+//     Q.pop();
+
+//     u=cood[ttop.i].first;
+//     v=cood[ttop.i].second;
+
+//     u1=u;
+//     v1=v;
+//     if(ttop.id==R) v1++;
+//     if(ttop.id==L) v1--;
+//     if(ttop.id==T) u1--;
+//     if(ttop.id==D) u1++;
+
+// // printf("\n %d %d *",u1,v1);
+//     if(S.find(pii(u1,v1))!=S.end()) 
+//       continue;
+//     if(used[ttop.j])
+//       continue;
+// // printf("%d-->%d %d",ttop.i,ttop.j,ttop.id);
+//     S.insert(pii(u1,v1));
+//     ans.pb(block[ttop.j]);
+//     used[ttop.j]=1;
+//     cood[ttop.j] = pii(u1,v1);
+//     for(int i=0;i<X;i++) if(!used[i])
+//     {
+//       Q.push(asign(ttop.j,i,R,adjr[ttop.j][i]));
+
+//       Q.push(asign(ttop.j,i,L,adjl[ttop.j][i]));
+
+//       Q.push(asign(ttop.j,i,T,adjt[ttop.j][i]));
+
+//       Q.push(asign(ttop.j,i,D,adjd[ttop.j][i]));
+//     }
+//   }
+// //printf("\n %d",(int)ans.size());
+//   ans.clear();
+//   ind=-1,ma=0;
+//   for(int i=0;i<X;i++)
+//   {
+//     int x=cood[i].first;
+//     int y=cood[i].second;
+//     int cnt=0;
+//     for(int j=0;j<X;j++) if(i!=j)
+//     {
+//       if(0<=cood[j].first-x&&0<=cood[j].second-y)
+//         if(N>cood[j].first-x&&N>cood[j].second-y)
+//           cnt++;
+//       }
+//       if(ind==-1||ma<cnt) ind=i,ma=cnt;
+//     }
+
+//     ans.resize(X);
+//     for(int i=0;i<X;i++) used[i]=0,ans[i] = dull,ans[i].idx=-1;
+//       int x=cood[ind].first;
+//     int y=cood[ind].second;
+
+//     for(int i=0;i<X;i++)
+//     {
+//       if(0<=cood[i].first-x&&0<=cood[i].second-y)
+//         if(N>cood[i].first-x&&N>cood[i].second-y)
+//         {
+//           used[i]=1;
+//           int aa=cood[i].first-x;
+//           int bb=cood[i].second-y;
+//           ans[aa*N+bb]=block[i];
+//         }
+//       }
+
+
+// //testing(ans,"testit.txt",false);
+// saveResult(ans,height,width,"finala.jpg");
+//  fill_greedy(ans,used);
+// //testing(ans,"testit.txt",true);
+//       return ans;
+//     }
 
 vector<vector<Block> > generation(vector<vector<Block> > &gen,int height,int width)
 {
@@ -946,20 +944,21 @@ int main(int argc, char *argv[])
 //double score_mst=0,score_gen=0;
 //printf("Insert done!!\n");
 
-  if(N>20)
-  {
-    ans=mst(height,width);
+  // if(N>20)
+  // {
+    MST mst(N);
+    ans=mst.get_mst(height,width);
    saveResult(ans,height,width,"final.jpg");
-  }
-  else if(N<=20)
-  {
-    bestBuddy();
-    ans=runAlgo(height,width);
-//  testing(ans,"testit.txt",false);
+//   }
+//   else if(N<=20)
+//   {
+//     bestBuddy();
+//     ans=runAlgo(height,width);
+// //  testing(ans,"testit.txt",false);
 //   saveResult(ans,height,width,"final.jpg");
-  }
+//   }
 
-  writeToFile(ans);
+  // writeToFile(ans);
   return 0;
 }
 
