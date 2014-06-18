@@ -21,22 +21,22 @@ using namespace std;
 
 struct data
 {
-  int cc;
-  int id;
-  bool operator <(const data &x)const
-  {
-    return this->cc > x.cc;
-  }
+	int cc;
+	int id;
+	bool operator <(const data &x)const
+	{
+		return this->cc > x.cc;
+	}
 };
 
 struct edges
 {
-  int i,j,id;
-  double weight;
-  bool operator <(const edges & x)const
-  {
-    return this->weight>x.weight;
-  }
+	int i,j,id;
+	double weight;
+	bool operator <(const edges & x)const
+	{
+		return this->weight>x.weight;
+	}
 };
 
 edges asign(const int  i,const int j,const int id,const double w);

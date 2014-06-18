@@ -67,19 +67,17 @@ vector<Block> MST::get_mst(int height,int width)
 	vector<Block> ans;
 	edges temp;
 	priority_queue<edges> Q;
-	while(Q.size())
-		Q.pop();
+	while(Q.size()) Q.pop();
 
 	int ind=1;
 	bool used[X];
 
 	for(int i=0;i<X;i++) used[i]=0;
-		vector<pii > cood;
+	vector<pii> cood;
 	set<pii> S;
 	for(int i=0;i<X;i++) cood.pb(make_pair(INF,INF));
 
-
-		ans.pb(pieces->block[ind]);
+	ans.pb(pieces->block[ind]);
 	used[ind]=1;
 	cood[ind]=pii(0,0);
 	S.insert(pii(0,0));
@@ -88,11 +86,8 @@ vector<Block> MST::get_mst(int height,int width)
 	if(i!=ind)
 	{
 		Q.push(asign(ind,i,R,pieces->adjr[ind][i]));
-
 		Q.push(asign(ind,i,L,pieces->adjl[ind][i]));
-
 		Q.push(asign(ind,i,T,pieces->adjt[ind][i]));
-
 		Q.push(asign(ind,i,D,pieces->adjd[ind][i]));
 	}
 
@@ -113,13 +108,8 @@ vector<Block> MST::get_mst(int height,int width)
 		if(ttop.id==L) v1--;
 		if(ttop.id==T) u1--;
 		if(ttop.id==D) u1++;
-
-// printf("\n %d %d *",u1,v1);
-		if(S.find(pii(u1,v1))!=S.end()) 
-			continue;
-		if(used[ttop.j])
-			continue;
-// printf("%d-->%d %d",ttop.i,ttop.j,ttop.id);
+		if(S.find(pii(u1,v1))!=S.end()) continue;
+		if(used[ttop.j]) continue;
 		S.insert(pii(u1,v1));
 		ans.pb(pieces->block[ttop.j]);
 		used[ttop.j]=1;
@@ -127,15 +117,12 @@ vector<Block> MST::get_mst(int height,int width)
 		for(int i=0;i<X;i++) if(!used[i])
 		{
 			Q.push(asign(ttop.j,i,R,pieces->adjr[ttop.j][i]));
-
 			Q.push(asign(ttop.j,i,L,pieces->adjl[ttop.j][i]));
-
 			Q.push(asign(ttop.j,i,T,pieces->adjt[ttop.j][i]));
-
 			Q.push(asign(ttop.j,i,D,pieces->adjd[ttop.j][i]));
 		}
 	}
-//printf("\n %d",(int)ans.size());
+
 	ans.clear();
 	ind=-1,ma=0;
 	for(int i=0;i<X;i++)
@@ -145,22 +132,20 @@ vector<Block> MST::get_mst(int height,int width)
 		int cnt=0;
 		for(int j=0;j<X;j++) if(i!=j)
 		{
-			if(0<=cood[j].first-x&&0<=cood[j].second-y)
-				if(N>cood[j].first-x&&N>cood[j].second-y)
-					cnt++;
+			if(0<=cood[j].first-x&&0<=cood[j].second-y) if(N>cood[j].first-x&&N>cood[j].second-y) cnt++;
 		}
 		if(ind==-1||ma<cnt) ind=i,ma=cnt;
 	}
 
 	ans.resize(X);
 	for(int i=0;i<X;i++) used[i]=0,ans[i] = pieces->dull,ans[i].idx=-1;
-		int x=cood[ind].first;
+	
+	int x=cood[ind].first;
 	int y=cood[ind].second;
 
 	for(int i=0;i<X;i++)
 	{
-		if(0<=cood[i].first-x&&0<=cood[i].second-y)
-		if(N>cood[i].first-x&&N>cood[i].second-y)
+		if(0<=cood[i].first-x&&0<=cood[i].second-y) if(N>cood[i].first-x&&N>cood[i].second-y)
 		{
 			used[i]=1;
 			int aa=cood[i].first-x;
@@ -168,11 +153,6 @@ vector<Block> MST::get_mst(int height,int width)
 			ans[aa*N+bb]=pieces->block[i];
 		}
 	}
-
-
-//testing(ans,"testit.txt",false);
-	// saveResult(ans,height,width,"finala.jpg");
 	fill_greedy(ans,used);
-//testing(ans,"testit.txt",true);
 	return ans;
 }
