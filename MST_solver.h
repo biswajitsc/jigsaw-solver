@@ -47,6 +47,7 @@ class MST
 {
 	int N,X;
 	Images* pieces;
+	
 public:
 	MST(int n, Images * image):N(n),X(n*n),pieces(image){}
 	vector<Block> get_mst(int height, int width);

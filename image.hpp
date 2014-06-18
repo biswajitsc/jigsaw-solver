@@ -153,29 +153,10 @@ public:
                 for(int k=0;k<width;k++)
                 {
                     pix=cvGet2D(img,j,k); 
-                    for(int h=0;h<3;h++)
-                        block[i].image[j][k].val[h] = pix.val[h];
+                    for(int h=0;h<3;h++) block[i].image[j][k].val[h] = pix.val[h];
                 }
             }
         }
-    }
-
-    double SSD_right(int sure,int trial)
-    {
-        double ssd=0;
-
-        int i,j;
-
-        for(i=0;i<height;i++)
-        {
-            for(j=1;j<=limit;j++)
-            {
-                for(int h=0;h<3;h++)
-                    ssd = ssd + (block[sure].image[i][width - j].val[h]-block[trial].image[i][j-1].val[h])*(block[sure].image[i][width - j].val[h]-block[trial].image[i][j-1].val[h]);      
-            }
-
-        }
-        return ssd;
     }
 
 
@@ -183,7 +164,6 @@ public:
     {
         double ssd=0;
         int i,j;
-
         for(i=0;i<height;i++)
         {
             for(j=1;j<=limit;j++)
@@ -191,7 +171,6 @@ public:
                 for(int h=0;h<3;h++)
                     ssd = ssd + (block[sure].image[i][j-1].val[h]-block[trial].image[i][width - j].val[h])*(block[sure].image[i][j-1].val[h]-block[trial].image[i][width - j].val[h]);
             }
-
         }
         return ssd;
     }
@@ -200,7 +179,6 @@ public:
     {
         double ssd=0;
         int i,j;
-
         for(i=1;i<=limit;i++)
         {
             for(j=0;j<width;j++)
@@ -208,26 +186,7 @@ public:
                 for(int h=0;h<3;h++)
                     ssd = ssd + (block[sure].image[i-1][j].val[h]-block[trial].image[height - i][j].val[h])*(block[sure].image[i-1][j].val[h]-block[trial].image[height - i][j].val[h]);
             }
-
         }
-        return ssd;
-    }
-
-    double SSD_bottom(int sure,int trial)
-    {
-        double ssd=0;
-        int i,j;
-
-        for(i=1;i<=limit;i++)
-        {
-            for(j=0;j<width;j++)
-            {
-                for(int h=0;h<3;h++)
-                    ssd = ssd + (block[sure].image[height - i][j].val[h]-block[trial].image[i-1][j].val[h])*(block[sure].image[height - i][j].val[h]-block[trial].image[i-1][j].val[h]);
-            }
-
-        }
-
         return ssd;
     }
 
@@ -248,21 +207,6 @@ public:
         }
     }
 
-    void insertInRightMatrix()
-    {
-        double ssd;
-        for(int i=0;i<X;i++)
-        {
-            for(int j=0;j<X;j++)
-            {
-                if(i==j)
-                    continue;
-                ssd = SSD_right(i,j);
-                adjr[i][j]=ssd;
-            }
-        }
-    }
-
     void insertInTopMatrix()
     {
         double ssd;
@@ -275,21 +219,6 @@ public:
                 ssd = SSD_top(i,j);
                 adjt[i][j]=ssd;
                 adjd[j][i]=ssd;
-            }
-        }
-    }
-
-    void insertInBottomMatrix()
-    {
-        double ssd;
-        for(int i=0;i<X;i++)
-        {
-            for(int j=0;j<X;j++)
-            {
-                if(i==j)
-                    continue;
-                ssd = SSD_bottom(i,j);
-                adjd[i][j]=ssd;
             }
         }
     }

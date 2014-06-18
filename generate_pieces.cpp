@@ -16,16 +16,14 @@ void generateImages(IplImage* img, int n, int height, int width)
         {
             for(int k = 0; k < width; k++)
             {
-                pix=cvGet2D(img, j+start, k+stop); 
+                pix = cvGet2D(img, j+start, k+stop); 
                 for(int h = 0; h < 3; h++)
                 {
                     block[i].image[j][k].val[h]=pix.val[h];
                 }
             }
         }
-
     }
-
 }
 
 vector<Block> permute(int n)
@@ -57,7 +55,6 @@ int main(int argc, char* argv[])
 
     IplImage *img,*scrambled;
 
-    
     CvScalar pix;
     img=cvLoadImage(argv[1]);
     if(img==0)
