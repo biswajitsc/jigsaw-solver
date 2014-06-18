@@ -16,7 +16,7 @@
 #include <cmath>
 
 #include "image.hpp"
-// #include "MST_solver.cpp"
+#include "MST_solver.cpp"
 
 using namespace std;
 
@@ -42,255 +42,29 @@ using namespace std;
 
 int N,X;
 
-vector<vector <double> > adjl,adjr,adjt,adjd;
 vector<int> bbl, bbr, bbt, bbd;
-Block* block;
-Block dull;
 
-struct edges
-{
-  int i,j,id;
-  double weight;
-  bool operator <(const edges & x)const
-  {
-    return this->weight>x.weight;
-  }
-};
+Images pieces;
 
-struct data
-{
-  int cc;
-  int id;
-  bool operator <(const data &x)const
-  {
-    return this->cc > x.cc;
-  }
-};
+// struct edges
+// {
+//   int i,j,id;
+//   double weight;
+//   bool operator <(const edges & x)const
+//   {
+//     return this->weight>x.weight;
+//   }
+// };
 
-void initializeVector(int n)
-{
-  adjl.resize(n);
-  for(int i=0;i<n;i++)
-    adjl[i].resize(n);
-  adjr.resize(n);
-  for(int i=0;i<n;i++)
-    adjr[i].resize(n);
-  adjt.resize(n);
-  for(int i=0;i<n;i++)
-    adjt[i].resize(n);
-  adjd.resize(n);
-  for(int i=0;i<n;i++)
-    adjd[i].resize(n);
-}
-
-void assignMemory(int height,int width)
-{
-  block = new Block[X];
-  int i,j,k;
-  for(i=0;i<X;i++)
-  {
-    block[i].image = new Pixel*[height];
-    block[i].bins = new int[bin];
-
-    for(j=0;j<4;j++)
-      block[i].id[j]=false;
-    for(j=0;j<bin;j++)
-    {
-      block[i].bins[j] =0;
-    }
-    for(j=0;j<height;j++)
-    {
-      block[i].image[j] = new Pixel[width];
-    }
-  }
-  dull.image = new Pixel*[height];
-  dull.bins = new int[bin];
-  for(j=0;j<height;j++)
-    dull.image[j] = new Pixel[width];
-}
-
-void loadImages(int height,int width)
-{
-  IplImage* img;
-  CvScalar pix;
-  for(int i=0;i<X;i++)
-  {
-    char str[50],str1[50];
-    strcpy(str,"generated_pieces/");
-    sprintf(str1,"%d",i+1);
-    strcat(str1,".jpg");
-    strcat(str,str1);
-    //cout<<"\n"<<str<<"\n";
-    //getchar();
-    img=cvLoadImage(str);
-    block[i].idx=i;
-    for(int j=0;j<height;j++)
-    {
-      for(int k=0;k<width;k++)
-      {
-        pix=cvGet2D(img,j,k); 
-        for(int h=0;h<3;h++)
-          block[i].image[j][k].val[h] = pix.val[h];
-      }
-    }
-  }
-}
-
-
-double SSD_right(int sure,int trial,int height,int width)
-{
-  double ssd=0;
-
-  int i,j;
-
-  for(i=0;i<height;i++)
-  {
-    for(j=1;j<=limit;j++)
-    {
-      for(int h=0;h<3;h++)
-        ssd = ssd + (block[sure].image[i][width - j].val[h]-block[trial].image[i][j-1].val[h])*(block[sure].image[i][width - j].val[h]-block[trial].image[i][j-1].val[h]);      
-    }
-
-  }
-  return ssd;
-}
-
-
-double SSD_left(int sure,int trial,int height,int width)
-{
-  double ssd=0;
-  int i,j;
-
-  for(i=0;i<height;i++)
-  {
-    for(j=1;j<=limit;j++)
-    {
-      for(int h=0;h<3;h++)
-        ssd = ssd + (block[sure].image[i][j-1].val[h]-block[trial].image[i][width - j].val[h])*(block[sure].image[i][j-1].val[h]-block[trial].image[i][width - j].val[h]);
-    }
-
-  }
-  return ssd;
-}
-
-double SSD_top(int sure,int trial,int height,int width)
-{
-  double ssd=0;
-  int i,j;
-
-  for(i=1;i<=limit;i++)
-  {
-    for(j=0;j<width;j++)
-    {
-      for(int h=0;h<3;h++)
-        ssd = ssd + (block[sure].image[i-1][j].val[h]-block[trial].image[height - i][j].val[h])*(block[sure].image[i-1][j].val[h]-block[trial].image[height - i][j].val[h]);
-    }
-
-  }
-  return ssd;
-}
-
-double SSD_bottom(int sure,int trial,int height,int width)
-{
-  double ssd=0;
-  int i,j;
-
-  for(i=1;i<=limit;i++)
-  {
-    for(j=0;j<width;j++)
-    {
-      for(int h=0;h<3;h++)
-        ssd = ssd + (block[sure].image[height - i][j].val[h]-block[trial].image[i-1][j].val[h])*(block[sure].image[height - i][j].val[h]-block[trial].image[i-1][j].val[h]);
-    }
-
-  }
-
-  return ssd;
-}
-
-
-void insertInLeftMatrix(int height,int width)
-{
-  double ssd;
-  for(int i=0;i<X;i++)
-  {
-    for(int j=0;j<X;j++)
-    {
-      if(i==j)
-        continue;
-      ssd = SSD_left(i,j,height,width);
-      adjl[i][j]=ssd;
-      adjr[j][i]=ssd;
-    }
-  }
-}
-
-void insertInRightMatrix(int height,int width)
-{
-  double ssd;
-  for(int i=0;i<X;i++)
-  {
-    for(int j=0;j<X;j++)
-    {
-      if(i==j)
-        continue;
-      ssd = SSD_right(i,j,height,width);
-      adjr[i][j]=ssd;
-    }
-  }
-}
-
-void insertInTopMatrix(int height,int width)
-{
-  double ssd;
-  for(int i=0;i<X;i++)
-  {
-    for(int j=0;j<X;j++)
-    {
-      if(i==j)
-        continue;
-      ssd = SSD_top(i,j,height,width);
-      adjt[i][j]=ssd;
-      adjd[j][i]=ssd;
-    }
-  }
-}
-
-void insertInBottomMatrix(int height,int width)
-{
-  double ssd;
-  for(int i=0;i<X;i++)
-  {
-    for(int j=0;j<X;j++)
-    {
-      if(i==j)
-        continue;
-      ssd = SSD_bottom(i,j,height,width);
-      adjd[i][j]=ssd;
-    }
-  }
-}
-
-double getWeight(vector<Block> &c, int k, Block b)
-{
-  double ans=0;
-  int a=k/N,bb=k%N;
-
-  for(int i=0;i<4;i++)
-  {
-    int a1=a+xx[i],b1=bb+yy[i];
-    if(a1<0||a1>=N) continue;
-    if(b1<0||b1>=N) continue;
-
-    if(c[a1*N+b1].idx==-1) continue;
-    if(i==0) ans+=adjr[b.idx][c[a1*N+b1].idx];
-    if(i==1) ans+=adjd[b.idx][c[a1*N+b1].idx];
-    if(i==2) ans+=adjl[b.idx][c[a1*N+b1].idx];
-    if(i==3) ans+=adjt[b.idx][c[a1*N+b1].idx];
-  }
-  return ans;
-}
-
+// struct data
+// {
+//   int cc;
+//   int id;
+//   bool operator <(const data &x)const
+//   {
+//     return this->cc > x.cc;
+//   }
+// };
 
 
 int findbuddy(vector<Block> &c, bool * used, int k)
@@ -374,7 +148,7 @@ vector<Block> crossover(vector<Block> &a, vector<Block> &b)
       {
         if(!used[i])
         {
-          double matemp=getWeight(ans,temp,block[i]);
+          double matemp=pieces.getWeight(ans,temp,pieces.block[i]);
           if(ind==-1||ma>matemp) ind=i,ma=matemp;
         }
         k=ind;
@@ -382,7 +156,7 @@ vector<Block> crossover(vector<Block> &a, vector<Block> &b)
     }
 
     used[k]=1;
-    ans[temp]=block[k];
+    ans[temp]=pieces.block[k];
     int aa,bb;
     bb=temp%N;
     aa=temp/N;
@@ -483,12 +257,12 @@ for(int i=0;i<X;i++)
   if((i+1)%N==0){}
     else
     {
-      ans+=adjr[c[i].idx][c[i+1].idx];
+      ans+=pieces.adjr[c[i].idx][c[i+1].idx];
     }
   }
   for(int i=0;i<X-N;i++)
   {
-    ans+=adjd[c[i].idx][c[i+N].idx];
+    ans+=pieces.adjd[c[i].idx][c[i+N].idx];
   }
   return ans;
 }
@@ -606,186 +380,6 @@ void testing(vector<Block> ans,const char *output,bool fill)
   out.close();
 }
 
-
-void fill_greedy(vector<Block> &ans,bool *used)
-{
-int CC[X];
-int a,bb,a1,b1;
-data top;
-int ind;
-double matemp,ma;
-
-for(int i=0;i<X;i++)
-  CC[i] = 0;
-
-for(int i=0;i<X;i++)
-{
-  a=i/N,bb=i%N;
-
-  for(int j=0;j<4;j++)
-  {
-    a1=a+xx[j],b1=bb+yy[j];
-    if(a1<0||a1>=N) continue;
-    if(b1<0||b1>=N) continue;
-    if(ans[a1*N+b1].idx!=-1)
-      CC[i]++;
-  }
-}
-priority_queue<data> Q;
-for(int i=0;i<X;i++)if(!used[ans[i].idx])
-  Q.push(asign_data(CC[i],i));
-
-while(Q.size())
-{
-  top = Q.top();
-  Q.pop();
-  if(ans[top.id].idx!=-1) 
-    continue;
-  ind=-1;
-  ma = 0;
-  for(int i=0;i<X;i++)
-    if(!used[i])
-    {
-      matemp=getWeight(ans,top.id,block[i]);
-      if(ind==-1||ma>matemp) ind=i,ma=matemp;
-    }
-
-    a=top.id/N,bb=top.id%N;
-    for(int j=0;j<4;j++)
-    {
-      a1=a+xx[j],b1=bb+yy[j];
-      if(a1<0||a1>=N) continue;
-      if(b1<0||b1>=N) continue;
-      if(ans[a1*N+b1].idx==-1)
-      {
-        CC[a1*N+b1]++;
-        Q.push(asign_data(CC[a1*N+b1],a1*N+b1)); 
-      }
-    }
-
-    ans[top.id] = block[ind]; 
-    used[ind] =1;
-
-  }
-}
-
-
-vector<Block> mst(int height,int width)
-{
-int u,v,u1,v1,ma;
-vector<Block> ans;
-edges temp;
-priority_queue<edges> Q;
-while(Q.size())
-  Q.pop();
-
-int ind=1;
-bool used[X];
-
-for(int i=0;i<X;i++) used[i]=0;
-  vector<pii > cood;
-set<pii> S;
-for(int i=0;i<X;i++) cood.pb(make_pair(INF,INF));
-
-
-  ans.pb(block[ind]);
-used[ind]=1;
-cood[ind]=pii(0,0);
-S.insert(pii(0,0));
-
-for(int i=0;i<X;i++) 
-  if(i!=ind)
-  {
-    Q.push(asign(ind,i,R,adjr[ind][i]));
-
-    Q.push(asign(ind,i,L,adjl[ind][i]));
-
-    Q.push(asign(ind,i,T,adjt[ind][i]));
-
-    Q.push(asign(ind,i,D,adjd[ind][i]));
-  }
-
-  int cc=0;
-  edges ttop;
-  while(ans.size()<X && !Q.empty())
-  {
-    cc++;
-    ttop=Q.top();
-    Q.pop();
-
-    u=cood[ttop.i].first;
-    v=cood[ttop.i].second;
-
-    u1=u;
-    v1=v;
-    if(ttop.id==R) v1++;
-    if(ttop.id==L) v1--;
-    if(ttop.id==T) u1--;
-    if(ttop.id==D) u1++;
-
-// printf("\n %d %d *",u1,v1);
-    if(S.find(pii(u1,v1))!=S.end()) 
-      continue;
-    if(used[ttop.j])
-      continue;
-// printf("%d-->%d %d",ttop.i,ttop.j,ttop.id);
-    S.insert(pii(u1,v1));
-    ans.pb(block[ttop.j]);
-    used[ttop.j]=1;
-    cood[ttop.j] = pii(u1,v1);
-    for(int i=0;i<X;i++) if(!used[i])
-    {
-      Q.push(asign(ttop.j,i,R,adjr[ttop.j][i]));
-
-      Q.push(asign(ttop.j,i,L,adjl[ttop.j][i]));
-
-      Q.push(asign(ttop.j,i,T,adjt[ttop.j][i]));
-
-      Q.push(asign(ttop.j,i,D,adjd[ttop.j][i]));
-    }
-  }
-//printf("\n %d",(int)ans.size());
-  ans.clear();
-  ind=-1,ma=0;
-  for(int i=0;i<X;i++)
-  {
-    int x=cood[i].first;
-    int y=cood[i].second;
-    int cnt=0;
-    for(int j=0;j<X;j++) if(i!=j)
-    {
-      if(0<=cood[j].first-x&&0<=cood[j].second-y)
-        if(N>cood[j].first-x&&N>cood[j].second-y)
-          cnt++;
-      }
-      if(ind==-1||ma<cnt) ind=i,ma=cnt;
-    }
-
-    ans.resize(X);
-    for(int i=0;i<X;i++) used[i]=0,ans[i] = dull,ans[i].idx=-1;
-      int x=cood[ind].first;
-    int y=cood[ind].second;
-
-    for(int i=0;i<X;i++)
-    {
-      if(0<=cood[i].first-x&&0<=cood[i].second-y)
-        if(N>cood[i].first-x&&N>cood[i].second-y)
-        {
-          used[i]=1;
-          int aa=cood[i].first-x;
-          int bb=cood[i].second-y;
-          ans[aa*N+bb]=block[i];
-        }
-      }
-
-
-//testing(ans,"testit.txt",false);
-// saveResult(ans,height,width,"finala.jpg");
- fill_greedy(ans,used);
-//testing(ans,"testit.txt",true);
-      return ans;
-    }
-
 vector<vector<Block> > generation(vector<vector<Block> > &gen,int height,int width)
 {
   vector<vector<Block> > answer;
@@ -817,8 +411,8 @@ vector<Block> runAlgo(int height,int width)
     temp.clear();
     for(int j=0;j<X;j++)
     {
-      block[j].idx=j;
-      temp.pb(block[j]);
+      pieces.block[j].idx=j;
+      temp.pb(pieces.block[j]);
     }
     for(int j=0;j<X;j++)
     {
@@ -858,7 +452,7 @@ vector<Block> runAlgo(int height,int width)
 
     for(int j=0;j<X;j++)
     {
-      wt+=getWeight(gen[i],j,gen[i][j]);
+      wt+=pieces.getWeight(gen[i],j,gen[i][j]);
     }
     if(i==0||wt<min)
       wt=min,pose=i;
@@ -881,10 +475,10 @@ void bestBuddy()
       for(int j=i+1;j<X;j++)
       {
         int a=-1;
-        for(int k=0;k<X;k++) if(k!=i)if(a==-1||adjl[i][k]<adjl[i][a]) a=k;
+        for(int k=0;k<X;k++) if(k!=i)if(a==-1||pieces.adjl[i][k]<pieces.adjl[i][a]) a=k;
 
           int b=-1;
-        for(int k=0;k<X;k++) if(k!=j)if(b==-1||adjr[j][k]<adjr[j][b]) b=k;
+        for(int k=0;k<X;k++) if(k!=j)if(b==-1||pieces.adjr[j][k]<pieces.adjr[j][b]) b=k;
 
           if(a==j&&b==i)
           {
@@ -896,10 +490,10 @@ void bestBuddy()
           for(int j=i+1;j<X;j++)
           {
             int a=-1;
-            for(int k=0;k<X;k++) if(a==-1||adjt[i][k]<adjt[i][a]) a=k;
+            for(int k=0;k<X;k++) if(a==-1||pieces.adjt[i][k]<pieces.adjt[i][a]) a=k;
 
               int b=-1;
-            for(int k=0;k<X;k++) if(b==-1||adjd[j][k]<adjd[j][b]) b=k;
+            for(int k=0;k<X;k++) if(b==-1||pieces.adjd[j][k]<pieces.adjd[j][b]) b=k;
 
               if(a==j&&b==i)
               {
@@ -913,42 +507,18 @@ void bestBuddy()
 
 int main(int argc, char *argv[])
 {
-
-//Declare variables
-
-  IplImage* img,*gray,*img1;
-  IplImage* gray_x,*gray_y,*abs_gray_x,*abs_gray_y,*final_grad,*magnitude,*angle;
-  int k,i,j,h,start,stop,l,height,width;
-  CvScalar pixel,pix,pix2;
-
-
-  img = cvLoadImage("generated_pieces/1.jpg", CV_LOAD_IMAGE_COLOR);
-  printf("Enter The Value of N in NxN : \n");
-  scanf("%d",&N);
-  // assert(argc==2);
-  // stringstream ss(argv[1]);
-//   // ss>>N;
-  X=N*N;
   start_time=clock();
-  height = img->height;
-  width = img->width;
   vector<Block> ans;
   vector<Block> ans_mst;
-  initializeVector(X);
-  assignMemory(height,width);
-  loadImages(height,width);
-  insertInTopMatrix(height,width);
-//insertInBottomMatrix(height,width);
-  insertInLeftMatrix(height,width);
-//insertInRightMatrix(height,width);
+  pieces.initializeAll();
+  N=pieces.N;
+  X=N*N;
 //double score_mst=0,score_gen=0;
-//printf("Insert done!!\n");
-
   // if(N>20)
   // {
-    // MST mst(N, block);
-    ans=mst(height,width);
-   saveResult(ans,height,width,"final.jpg");
+    MST mst(N,&pieces);
+    ans=mst.get_mst(pieces.height,pieces.width);
+   saveResult(ans,pieces.height,pieces.width,"final.jpg");
 //   }
 //   else if(N<=20)
 //   {
