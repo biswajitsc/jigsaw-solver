@@ -1,21 +1,24 @@
 #include <iostream>
-#include <algorithm>
-#include <highgui.h>
-#include <cv.h>
-#include <cmath>
 #include <time.h>
+#include "image.hpp"
+#include <iostream>
 #include <stdlib.h>
+#include <algorithm>
 #include <string>
+#include <stdio.h>
+#include <stdlib.h>
 #include <queue>
 #include <utility>
 #include <vector>
 #include <time.h>
 #include <sstream>
 #include <fstream>
-clock_t start_time;
+#include <cmath>
 
+#include "image.hpp"
 
-#define PIX(img,i,j,k) (((uchar*)img->imageData)[(i)*img->widthStep+(j)*img->nChannels+(k)])
+using namespace std;
+
 #define pb push_back
 #define bin 10
 #define limit 1
@@ -27,34 +30,21 @@ clock_t start_time;
 #define INF 1000000000
 #define TIME_LIMIT 15.0
 
+typedef std::pair<int,int> pii;
+typedef std::pair<pii,int> ppi;
+
+#include <opencv/highgui.h>
+#include <opencv/cv.h>
+clock_t start_time;
 using namespace std;
 
 
-typedef pair<int,int> pii;
-typedef pair<pii,int> ppi;
-
-typedef struct Pixel
-{
-  float val[3];
-  int val_gray[3];
-}Pixel;
-
 int N,X;
-typedef struct Block {
-  Pixel** image;
-  int n;
-  bool id[4];
-  int neigh[4];
-  int* bins;
-  int idx;
-}Block;
-
 
 vector<vector <double> > adjl,adjr,adjt,adjd;
 vector<int> bbl, bbr, bbt, bbd;
 Block* block;
 Block dull;
-
 
 struct edges
 {
@@ -124,10 +114,14 @@ void loadImages(int height,int width)
   CvScalar pix;
   for(int i=0;i<X;i++)
   {
-    char str[10],str1[10];
+    char str[50],str1[50];
+    strcpy(str,"generated_pieces/");
     sprintf(str1,"%d",i+1);
     strcat(str1,".jpg");
-    img=cvLoadImage(str1);
+    strcat(str,str1);
+    //cout<<"\n"<<str<<"\n";
+    //getchar();
+    img=cvLoadImage(str);
     block[i].idx=i;
     for(int j=0;j<height;j++)
     {
@@ -786,9 +780,10 @@ for(int i=0;i<X;i++)
         }
       }
 
-//saveResult(ans,height,width,"finala.jpg");
+
 //testing(ans,"testit.txt",false);
-// fill_greedy(ans,used);
+saveResult(ans,height,width,"finala.jpg");
+ fill_greedy(ans,used);
 //testing(ans,"testit.txt",true);
       return ans;
     }
@@ -929,12 +924,12 @@ int main(int argc, char *argv[])
   CvScalar pixel,pix,pix2;
 
 
-  img = cvLoadImage("1.jpg", CV_LOAD_IMAGE_COLOR);
-//printf("Enter The Value of N in NxN : \n");
-//scanf("%d",&N);
-  assert(argc==2);
-  stringstream ss(argv[1]);
-  ss>>N;
+  img = cvLoadImage("generated_pieces/1.jpg", CV_LOAD_IMAGE_COLOR);
+  printf("Enter The Value of N in NxN : \n");
+  scanf("%d",&N);
+  // assert(argc==2);
+  // stringstream ss(argv[1]);
+//   // ss>>N;
   X=N*N;
   start_time=clock();
   height = img->height;
@@ -954,7 +949,7 @@ int main(int argc, char *argv[])
   if(N>20)
   {
     ans=mst(height,width);
-//   saveResult(ans,height,width,"final.jpg");
+   saveResult(ans,height,width,"final.jpg");
   }
   else if(N<=20)
   {

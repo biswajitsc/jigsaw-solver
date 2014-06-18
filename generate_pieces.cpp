@@ -1,59 +1,4 @@
-#include <iostream>
-#include <algorithm>
-#include <highgui.h>
-#include <cv.h>
-#include <cmath>
-#include <time.h>
-#include <stdlib.h>
-#include <string>
-#include <queue>
-#include <utility>
-#include <vector>
-
-#define bin 10
-#define pb push_back
-
-using namespace std;
-
-typedef struct Pixel
-{
-    float val[3];
-    int val_gray[3];
-} Pixel;
-
-typedef struct Block {
-    Pixel** image;
-    int n;
-    bool id[4];
-    int neigh[4];
-    int* bins;
-    int idx;
-} Block;
-
-Block* block;
-
-void assignMemory(int height, int width, int n)
-{
-    block = new Block[n];
-    int i, j, k;
-    for(i = 0; i < n; i++)
-    {
-        block[i].image = new Pixel*[height];
-        block[i].bins = new int[bin];
-
-        for(j = 0; j < 4; j++){
-            block[i].id[j]=false;
-        }
-
-        for(j = 0; j < bin; j++){
-            block[i].bins[j] =0;
-        }
-
-        for(j = 0; j < height; j++){
-            block[i].image[j] = new Pixel[width];
-        }
-    }
-}
+#include "generate_pieces.h"
 
 void generateImages(IplImage* img, int n, int height, int width)
 {
@@ -66,6 +11,7 @@ void generateImages(IplImage* img, int n, int height, int width)
         stop  = i%n;
         start = start*height;
         stop = stop*width;
+
         for(int j = 0; j < height; j++)
         {
             for(int k = 0; k < width; k++)
@@ -77,7 +23,9 @@ void generateImages(IplImage* img, int n, int height, int width)
                 }
             }
         }
+
     }
+
 }
 
 vector<Block> permute(int n)
@@ -99,15 +47,17 @@ vector<Block> permute(int n)
 
 int main(int argc, char* argv[])
 {
+    int height,width,n;
+    int len;
     if(argc!=2)
     {
-        cout<<"No file name found. Please pass a file name as a parameter."<<endl;
+        cerr<<"No file name found. Please pass a file name as a parameter."<<endl;
         exit(1);
     }
 
     IplImage *img,*scrambled;
 
-    int height,width,n;
+    
     CvScalar pix;
     img=cvLoadImage(argv[1]);
     if(img==0)
@@ -115,14 +65,22 @@ int main(int argc, char* argv[])
         cout<<argv[1]<<": File not found."<<endl;
         exit(1);
     }
+
     cout<<"Image dimensions: "<<img->height<<" "<<img->width<<endl;
     cout<<"Enter side length of square grid: ";
-    cin>>n;
+    scanf("%d",&len);
+    
+    if(len<1)
+    {
+        cerr<<"Invalid Side Length. "<<endl<<"Aborting "<<endl;
+        exit(1);
+    }
 
-    height=(img->height)/n;
-    width=(img->width)/n;
+    n = min(img->height/len,img->width/len);
+    
+    height = width = len;
 
-    assignMemory(height,width,n*n);
+    block = assignMemory(height,width,n*n);
     generateImages(img,n,height,width);
 
     vector<Block> permuted = permute(n*n);
@@ -149,6 +107,6 @@ int main(int argc, char* argv[])
         cvSaveImage(filename,scrambled);
         printf("Generated %s\n",fileid);
     }
+    cerr<<"Picture Broken into total "<<n*n<<" pieces."<<endl;
     return 0;
-
 }
