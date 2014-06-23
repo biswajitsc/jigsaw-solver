@@ -3,9 +3,6 @@ Jigsaw-Solver
 
 A jigsaw puzzle solver for randomly shuffled rectangular shaped images.
 
-**generate_pieces.cpp** takes the image file name as parameter and creates the scrambled images in the **generated_pieces** folder.
-**compile_all.sh** contains scripts to compile all the cpp files.
-
 System-Requirements
 ===================
 
@@ -13,8 +10,8 @@ System-Requirements
 2. libopencv
 
 
-GENERATING PIECES ( JIGSAW PIECES )
-===================================
+Generating Jigsaw Pieces
+------------------------
 
 If you have an image ( jpg format ) , you would need to cut it out into jigsaw pieces ( to solve it later ! ).
 To do this, follow the steps :
