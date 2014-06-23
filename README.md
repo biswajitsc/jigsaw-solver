@@ -17,10 +17,11 @@ Generating Jigsaw Pieces
 A JPEG image can be used to generate randomly shuffled jigsaw pieces (to solve it later!) in the following manner:
 
 1. Enter 'chmod +x compile_GeneratePieces.sh' in the terminal to give it write access.
-2. Enter './compile_GeneratePieces.sh' to compile the jigsaw generating code. This generates an executable named **generate_pieces**.
-3. Run the Command : ./generate_pieces <name of jpg image>     . ( Note : It requires the full address of the image as a Command Line Argument ).
- 
-Note : After running the command, it would ask for the "length of each jigsaw block" to be cut into. Then squares of that length would be cut out from the image, shuffled and will be saved into folder generated_pieces/  named as {1.jpg .. N.jpg} ,And the remaining part of the Initial image left out will be cropped.
+2. Enter './compile_GeneratePieces.sh' in the terminal to compile the jigsaw generating code. This generates an executable named **generate_pieces**.
+3. Run the Command './generate_pieces <address of jpg image file>'.
+4. After running the command, enter the side the side length of the square pieces into which the image will be dissected into. Square images of the entered size would be generated, shuffled and will be saved in the folder 'generated_pieces' as '1.jpg', '2.jpg' and so on.
+
+The solver assumes that the scrambled images can be arranged into a square grid to generate the solved image. Hence the jigsaw generator crops out a maximum possible square from the entered image so as to make it possible to generate jigsaw pieces of the proper format.
 
 JIGSAW SOLVER
 ==============
