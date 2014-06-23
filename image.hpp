@@ -85,6 +85,12 @@ public:
         }
     }
 
+    vector<Block> getScrambledImage()
+    {
+        vector<Block> v;
+        for(int i=0;i<X;i++) v.pb(block[i]);
+        return v;
+    }
 
     void initializeAll()
     {
