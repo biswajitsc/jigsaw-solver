@@ -57,6 +57,7 @@ Algorithms used
 ---------------
 
 We have used two methods to solve the problem.
+
 1 . The first method is based on a **Minimum Spanning Tree** construction of the images. We constructed a modified form of the minimum spanning tree of the pieces by considering the mean squared pixel value difference of the edges of the jigsaw pieces as the edge weights of the graph.
 2 . The second method is based on a **Genetic Algorithm**. This method selects the best images from a pool of *evoluting* images based on a fitness function and *crosses* them together. The crossing is performed in a way so as to improve the resulting image.
 
@@ -66,6 +67,7 @@ Authors
 -------
 
 The whole project was contributed to by the following people.
+
 1. Anmol Gulati , IIT Kharagpur
 2. Biswajit Paria , IIT Kharagpur
 3. Kumar Krishna Aggarwal, IIT Kharagpur
