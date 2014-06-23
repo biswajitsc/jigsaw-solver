@@ -37,16 +37,6 @@ Jigsaw Solver
 
 Once we have the scrambled jigsaw pieces, we can use the jigsaw solving code to retrieve the original image. 
 
-1. Compile the Jigsaw Solver code
-````bash
-chmod +x compile_solver.sh
-./compile_solver.sh
-````` 
-This generates an executable named ````solver```` . 
-2. Run the Command :
-```bash
-./solver
-```
 1. Compile the jigsaw solving code using the following code.
 ```bash
 chmod +x compile_solver.sh
