@@ -4,8 +4,9 @@ Jigsaw-Solver
 A jigsaw puzzle solver for randomly shuffled rectangular shaped images.
 
 System-Requirements
-===================
+-------------------
 
+The following need to be installed in your linux system to compile the code:
 1. gcc 4.0+ compiler.
 2. libopencv
 
@@ -13,11 +14,11 @@ System-Requirements
 Generating Jigsaw Pieces
 ------------------------
 
-If you have an image ( jpg format ) , you would need to cut it out into jigsaw pieces ( to solve it later ! ).
-To do this, follow the steps :
+A JPEG image can be used to generate randomly shuffled jigsaw pieces (to solve it later!) in the following manner:
 
-1. Run compile_GeneratePieces.sh ( ensure that its been given root access ) . This will compile the code , and generate an exectable named **generate_pieces**.
-2. Run the Command : ./generate_pieces <name of jpg image>     . ( Note : It requires the full address of the image as a Command Line Argument ).
+1. Enter 'chmod +x compile_GeneratePieces.sh' in the terminal to give it write access.
+2. Enter './compile_GeneratePieces.sh' to compile the jigsaw generating code. This generates an executable named **generate_pieces**.
+3. Run the Command : ./generate_pieces <name of jpg image>     . ( Note : It requires the full address of the image as a Command Line Argument ).
  
 Note : After running the command, it would ask for the "length of each jigsaw block" to be cut into. Then squares of that length would be cut out from the image, shuffled and will be saved into folder generated_pieces/  named as {1.jpg .. N.jpg} ,And the remaining part of the Initial image left out will be cropped.
 
