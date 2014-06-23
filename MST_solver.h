@@ -18,6 +18,16 @@
 
 using namespace std;
 #define pb push_back
+#define bin 10
+#define limit 1
+#define ABS(Y) ((Y)<0?-(Y):(Y))
+#define R 0 
+#define T 1
+#define D 2
+#define L 3
+#define INF 1000000000
+#define TIME_LIMIT 15.0
+
 
 struct data
 {
@@ -26,6 +36,12 @@ struct data
 	bool operator <(const data &x)const
 	{
 		return this->cc > x.cc;
+	}
+	data() : cc(0),id(-1) {}
+	data(int c,int i)
+	{
+		cc = c;
+		id = i;
 	}
 };
 
@@ -37,12 +53,19 @@ struct edges
 	{
 		return this->weight>x.weight;
 	}
+	edges() : id(-1),i(-1),j(-1) {}
+	edges(const int  u,const int v,const int c,const double w) 
+	{
+	  i = u;
+	  j = v;
+	  id = c;
+	  weight = w;
+	}
+	void debug()
+	{
+	  printf("\n %d %d %d %lf",i,j,id,weight);
+	}
 };
-
-edges asign(const int  i,const int j,const int id,const double w);
-
-data asign_data(int c,int i);
-
 class MST
 {
 	int N,X;

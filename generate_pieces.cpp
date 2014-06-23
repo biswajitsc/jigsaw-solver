@@ -1,5 +1,33 @@
 #include "generate_pieces.h"
 
+
+void assignMemory(int height,int width,int X)
+{
+    block = new Block[X];
+    Block dull;
+    int i,j,k;
+    for(i=0;i<X;i++)
+    {
+        block[i].image = new Pixel*[height];
+        block[i].bins = new int[bin];
+
+        for(j=0;j<4;j++)
+            block[i].id[j]=false;
+        for(j=0;j<bin;j++)
+        {
+            block[i].bins[j] =0;
+        }
+        for(j=0;j<height;j++)
+        {
+            block[i].image[j] = new Pixel[width];
+        }
+    }
+    dull.image = new Pixel*[height];
+    dull.bins = new int[bin];
+    for(j=0;j<height;j++)
+     dull.image[j] = new Pixel[width];
+}
+
 void generateImages(IplImage* img, int n, int height, int width)
 {
     int start,stop;
@@ -77,7 +105,7 @@ int main(int argc, char* argv[])
     
     height = width = len;
 
-    block = assignMemory(height,width,n*n);
+    assignMemory(height,width,n*n);
     generateImages(img,n,height,width);
 
     vector<Block> permuted = permute(n*n);

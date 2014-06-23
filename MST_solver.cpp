@@ -25,8 +25,9 @@ void MST::fill_greedy(vector<Block> &ans,bool *used)
 		}
 	}
 	priority_queue<data> Q;
-	for(int i=0;i<X;i++)if(!used[ans[i].idx])
-		Q.push(asign_data(CC[i],i));
+	for(int i=0;i<X;i++)
+	  if(!used[ans[i].idx])
+		Q.push(data(CC[i],i));
 
 	while(Q.size())
 	{
@@ -52,7 +53,7 @@ void MST::fill_greedy(vector<Block> &ans,bool *used)
 			if(ans[a1*N+b1].idx==-1)
 			{
 				CC[a1*N+b1]++;
-				Q.push(asign_data(CC[a1*N+b1],a1*N+b1)); 
+				Q.push(data(CC[a1*N+b1],a1*N+b1)); 
 			}
 		}
 
@@ -85,10 +86,10 @@ vector<Block> MST::get_mst(int height,int width)
 	for(int i=0;i<X;i++) 
 	if(i!=ind)
 	{
-		Q.push(asign(ind,i,R,pieces->adjr[ind][i]));
-		Q.push(asign(ind,i,L,pieces->adjl[ind][i]));
-		Q.push(asign(ind,i,T,pieces->adjt[ind][i]));
-		Q.push(asign(ind,i,D,pieces->adjd[ind][i]));
+		Q.push(edges(ind,i,R,pieces->adjr[ind][i]));
+		Q.push(edges(ind,i,L,pieces->adjl[ind][i]));
+		Q.push(edges(ind,i,T,pieces->adjt[ind][i]));
+		Q.push(edges(ind,i,D,pieces->adjd[ind][i]));
 	}
 
 	int cc=0;
@@ -116,10 +117,10 @@ vector<Block> MST::get_mst(int height,int width)
 		cood[ttop.j] = pii(u1,v1);
 		for(int i=0;i<X;i++) if(!used[i])
 		{
-			Q.push(asign(ttop.j,i,R,pieces->adjr[ttop.j][i]));
-			Q.push(asign(ttop.j,i,L,pieces->adjl[ttop.j][i]));
-			Q.push(asign(ttop.j,i,T,pieces->adjt[ttop.j][i]));
-			Q.push(asign(ttop.j,i,D,pieces->adjd[ttop.j][i]));
+			Q.push(edges(ttop.j,i,R,pieces->adjr[ttop.j][i]));
+			Q.push(edges(ttop.j,i,L,pieces->adjl[ttop.j][i]));
+			Q.push(edges(ttop.j,i,T,pieces->adjt[ttop.j][i]));
+			Q.push(edges(ttop.j,i,D,pieces->adjd[ttop.j][i]));
 		}
 	}
 

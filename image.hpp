@@ -61,6 +61,31 @@ public:
 
     Images(){}
 
+    void loadImages()
+    {
+        IplImage* img;
+        CvScalar pix;
+        for(int i=0;i<X;i++)
+        {
+            char str[50],str1[50];
+            strcpy(str,"generated_pieces/");
+            sprintf(str1,"%d",i+1);
+            strcat(str1,".jpg");
+            strcat(str,str1);
+            img=cvLoadImage(str);
+            block[i].idx=i;
+            for(int j=0;j<height;j++)
+            {
+                for(int k=0;k<width;k++)
+                {
+                    pix=cvGet2D(img,j,k); 
+                    for(int h=0;h<3;h++) block[i].image[j][k].val[h] = pix.val[h];
+                }
+            }
+        }
+    }
+
+
     void initializeAll()
     {
         IplImage* img;
@@ -135,29 +160,6 @@ public:
             dull.image[j] = new Pixel[width];
     }
 
-    void loadImages()
-    {
-        IplImage* img;
-        CvScalar pix;
-        for(int i=0;i<X;i++)
-        {
-            char str[50],str1[50];
-            strcpy(str,"generated_pieces/");
-            sprintf(str1,"%d",i+1);
-            strcat(str1,".jpg");
-            strcat(str,str1);
-            img=cvLoadImage(str);
-            block[i].idx=i;
-            for(int j=0;j<height;j++)
-            {
-                for(int k=0;k<width;k++)
-                {
-                    pix=cvGet2D(img,j,k); 
-                    for(int h=0;h<3;h++) block[i].image[j][k].val[h] = pix.val[h];
-                }
-            }
-        }
-    }
 
 
     double SSD_left(int sure,int trial)
