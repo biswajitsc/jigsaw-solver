@@ -59,9 +59,10 @@ Algorithms used
 We have used two methods to solve the problem.
 
 1 . The first method is based on a **Minimum Spanning Tree** construction of the images. We constructed a modified form of the minimum spanning tree of the pieces by considering the mean squared pixel value difference of the edges of the jigsaw pieces as the edge weights of the graph.
+
 2 . The second method is based on a **Genetic Algorithm**. This method selects the best images from a pool of *evoluting* images based on a fitness function and *crosses* them together. The crossing is performed in a way so as to improve the resulting image.
 
-Since, the Genetic Algorithm takes much time to converge to the solution ( but provides much better results ), we run the **MST Solver** if the number of jigsaw pieces are over 400. Otherwise we run the **Genetic Algorithm Solver** for smaller datasets. 
+Since, the Genetic Algorithm takes much time to converge to the solution ( but provides much better results ), we run the MST Solver if the number of jigsaw pieces are over 400. Otherwise we run the Genetic Algorithm for smaller datasets. 
 
 Authors
 -------
@@ -72,7 +73,7 @@ The whole project was contributed to by the following people.
 2. Biswajit Paria , IIT Kharagpur
 3. Kumar Krishna Aggarwal, IIT Kharagpur
 
-This **Jigsaw-Solver** was developed for the following contest: http://www.robotix.in/events/event/sudocode. We were place 1st in this national level contest.
+This Jigsaw-Solver was developed for the following contest: http://www.robotix.in/events/event/sudocode. We were place 1st in this national level contest.
 
 Future Plans
 ------------
