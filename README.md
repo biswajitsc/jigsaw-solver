@@ -17,7 +17,7 @@ Generating Jigsaw Pieces
 
 A JPEG image can be used to generate randomly shuffled jigsaw pieces (to solve it later!) in the following manner:
 
-1. Compile the jigsaw generating code
+1. Compile the jigsaw generating code using the following code.
 ```bash
 chmod +x compile_GeneratePieces.sh
 ./compile_GeneratePieces.sh
@@ -32,11 +32,10 @@ This generates an executable named ```generate_pieces```.
 
 The solver assumes that the scrambled images can be arranged into a square grid to generate the solved image. Hence the jigsaw generator crops out a maximum possible square from the entered image so as to make it possible to generate jigsaw pieces of the proper format.
 
-JIGSAW SOLVER
-==============
+Jigsaw Solver
+-------------
 
-Now, as we already have the jigsaw square pieces, we would like to solve the jigsaw and retrieve the Solved Image.
-To do this, follow the steps : 
+Once we have the scrambled jigsaw pieces, we can use the jigsaw solving code to retrieve the original image. 
 
 1. Compile the Jigsaw Solver code
 ````bash
@@ -48,38 +47,55 @@ This generates an executable named ````solver```` .
 ```bash
 ./solver
 ```
+1. Compile the jigsaw solving code using the following code.
+```bash
+chmod +x compile_solver.sh
+./compile_solver.sh
+```
+This generates an executable named ```solver```.
 
-Note : Then It would ask for the Number of Jigsaw Pieces are there  (in the folder generated_pieces/ folder ). 
-Note : There is a TIME LIMIT of 15 seconds , ie , the code will run for 15 seconds and then generate a Solved Image.
+2. Run the following command to retrieve the original image from the images generated in the folder ```generated_pieces```.
+```bash
+./solver
+```
+3. After running the command, enter the number of rows of the square grid into which the jigsaw pieces would be fit into.
+	For example, 64 generated images would fit into a 8x8 square grid. Hence we enter 8.
 
-3. There will appear a new image named **final.jpg** , which would be the Solved Image for the Jigsaw.
+4. Both the scrambled and the solved images would be generated and saved in files ```scrambled_image.jpg``` and ```solved_image.jpg``` respectively.
 
-AUTHORS
-=======
+Algorithms used
+---------------
 
-The Whole Project was developed by :
-1. Anmol Gulati , IIT Kharagpur 
+We have used two methods to solve the problem.
 
+1 . The first method is based on a **Minimum Spanning Tree** construction of the images. We constructed a modified form of the minimum spanning tree of the pieces by considering the mean squared pixel value difference of the edges of the jigsaw pieces as the edge weights of the graph.
+
+2 . The second method is based on a **Genetic Algorithm**. This method selects the best images from a pool of *evoluting* images based on a fitness function and *crosses* them together. The crossing is performed in a way so as to improve the resulting image.
+
+Since, the Genetic Algorithm takes much time to converge to the solution ( but provides much better results ), we run the MST Solver if the number of jigsaw pieces are over 400. Otherwise we run the Genetic Algorithm for smaller datasets. 
+
+Authors
+-------
+
+The whole project was contributed to by the following people.
+
+1. Anmol Gulati , IIT Kharagpur
 2. Biswajit Paria , IIT Kharagpur
+3. Kumar Krishna Aggarwal, IIT Kharagpur
 
-We developed this **Jigsaw-Solver** for the following contest : [SUDOCODE](http://www.robotix.in/events/event/sudocode) . This was a National Level Online Contest , and we were placed 1st.
+This Jigsaw-Solver was developed for the following contest: [SUDOCODE](http://www.robotix.in/events/event/sudocode). We were place 1st in this national level contest.
 
-ALGORITHM-USED
-===============
-
-We have used two methods to solve the Jigsaw.
-1 . First One is an MST solver, which basically makes a weighted graph(based on gradient difference) between the pieces, and picks out a **Planar Minimum Spanning Tree**.
-2 . Second One uses **Genetic Algorithm** to solve the **Jigsaw Puzzle** . 
-
-As, the **Genetic Algorithm** takes much time to converge to the Solution ( but provides better results ). We Run the **MST Solver** if the Number of Jigsaw Pieces are Over 400 , else we run the **Genetic Algorithm Solver** . 
-
-FUTURE PLANS
-============
+Future Plans
+------------
 
 We would love to have people contribute to this project.
-One of the things on our mind is to have more methods to Solve the Jigsaw, and also Run all these Parallely and pick out the best solution.
+Some of the ideas we have in our minds are
+* Solve the jigsaw for a general rectangular grid.
+* Have non-square dimensions for the jigsaw pieces.
+* Include more methods to solve the jigsaw.
+* Run all methods parallely and output the best result.
 
-NOTE
-====
+Contact
+-------
 
-For Any Queries/Issues regarding the project, you can contact any of us at , anmol01gulati@gmail.com OR biswajitsc@gmail.com  .
+For any queries/issues regarding the project, you can contact any of us at anmol01gulati@gmail.com or biswajitsc@gmail.com.
