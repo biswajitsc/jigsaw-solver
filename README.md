@@ -37,6 +37,16 @@ Jigsaw Solver
 
 Once we have the scrambled jigsaw pieces, we can use the jigsaw solving code to retrieve the original image. 
 
+1. Compile the Jigsaw Solver code
+````bash
+chmod +x compile_solver.sh
+./compile_solver.sh
+````` 
+This generates an executable named ````solver```` . 
+2. Run the Command :
+```bash
+./solver
+```
 1. Compile the jigsaw solving code using the following code.
 ```bash
 chmod +x compile_solver.sh
@@ -73,7 +83,7 @@ The whole project was contributed to by the following people.
 2. Biswajit Paria , IIT Kharagpur
 3. Kumar Krishna Aggarwal, IIT Kharagpur
 
-This Jigsaw-Solver was developed for the following contest: http://www.robotix.in/events/event/sudocode. We were place 1st in this national level contest.
+This Jigsaw-Solver was developed for the following contest: [SUDOCODE](http://www.robotix.in/events/event/sudocode). We were place 1st in this national level contest.
 
 Future Plans
 ------------
