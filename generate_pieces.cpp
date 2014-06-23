@@ -21,6 +21,7 @@ void assignMemory(int height,int width,int X)
         {
             block[i].image[j] = new Pixel[width];
         }
+        
     }
     dull.image = new Pixel*[height];
     dull.bins = new int[bin];
