@@ -38,8 +38,16 @@ JIGSAW SOLVER
 Now, as we already have the jigsaw square pieces, we would like to solve the jigsaw and retrieve the Solved Image.
 To do this, follow the steps : 
 
-1. Run compile_solver.sh ( ensure that its been given root access ) . This will compile the code , and generate an executable named **solver**.
-2. Run the Command ./solver
+1. Compile the Jigsaw Solver code
+````bash
+chmod +x compile_solver.sh
+./compile_solver.sh
+````` 
+This generates an executable named ````solver```` . 
+2. Run the Command :
+```bash
+./solver
+```
 
 Note : Then It would ask for the Number of Jigsaw Pieces are there  (in the folder generated_pieces/ folder ). 
 Note : There is a TIME LIMIT of 15 seconds , ie , the code will run for 15 seconds and then generate a Solved Image.
@@ -50,10 +58,11 @@ AUTHORS
 =======
 
 The Whole Project was developed by :
-1. Anmol Gulati , IIT Kharagpur
+1. Anmol Gulati , IIT Kharagpur 
+
 2. Biswajit Paria , IIT Kharagpur
 
-We developed this **Jigsaw-Solver** for the following contest : http://www.robotix.in/events/event/sudocode . This was a National Level Online Contest , and we were placed 1st.
+We developed this **Jigsaw-Solver** for the following contest : [SUDOCODE](http://www.robotix.in/events/event/sudocode) . This was a National Level Online Contest , and we were placed 1st.
 
 ALGORITHM-USED
 ===============
