@@ -19,14 +19,14 @@ A JPEG image can be used to generate randomly shuffled jigsaw pieces (to solve i
 
 1. Compile the jigsaw generating code using the following code.
 	```bash
-	chmod +x compile_GeneratePieces.sh
-	./compile_GeneratePieces.sh
+	$ chmod +x compile_GeneratePieces.sh
+	$ ./compile_GeneratePieces.sh
 	```
 	This generates an executable named ```generate_pieces```.
 
 2. Run the following command after replacing ```myimage.jpg``` with the address of a JPEG image.
 	```bash
-	./generate_pieces myimage.jpg
+	$ ./generate_pieces myimage.jpg
 	```
 3. After running the command, enter the side the side length of the square pieces into which the image will be dissected into. Square images of the entered size would be generated, shuffled and will be saved in the folder ```generated_pieces``` as *1.jpg, 2.jpg* and so on.
 
@@ -39,14 +39,14 @@ Once we have the scrambled jigsaw pieces, we can use the jigsaw solving code to 
 
 1. Compile the jigsaw solving code using the following code.
 	```bash
-	chmod +x compile_solver.sh
-	./compile_solver.sh
+	$ chmod +x compile_solver.sh
+	$ ./compile_solver.sh
 	```
 	This generates an executable named ```solver```.
 
 2. Run the following command to retrieve the original image from the images generated in the folder ```generated_pieces```.
 	```bash
-	./solver
+	$ ./solver
 	```
 3. After running the command, enter the number of rows of the square grid into which the jigsaw pieces would be fit into.
 	For example, 64 generated images would fit into a 8x8 square grid. Hence we enter 8.
