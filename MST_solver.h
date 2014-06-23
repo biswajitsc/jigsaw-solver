@@ -29,16 +29,16 @@ using namespace std;
 #define TIME_LIMIT 15.0
 
 
-struct data
+struct minDis
 {
 	int cc;
 	int id;
-	bool operator <(const data &x)const
+	bool operator <(const minDis &x)const
 	{
 		return this->cc > x.cc;
 	}
-	data() : cc(0),id(-1) {}
-	data(int c,int i)
+	minDis() : cc(0),id(-1) {}
+	minDis(int c,int i)
 	{
 		cc = c;
 		id = i;

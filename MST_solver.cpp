@@ -4,7 +4,7 @@ void MST::fill_greedy(vector<Block> &ans,bool *used)
 {
 	int CC[X];
 	int a,bb,a1,b1;
-	data top;
+	minDis top;
 	int ind;
 	double matemp,ma;
 
@@ -24,10 +24,10 @@ void MST::fill_greedy(vector<Block> &ans,bool *used)
 				CC[i]++;
 		}
 	}
-	priority_queue<data> Q;
+	priority_queue<minDis> Q;
 	for(int i=0;i<X;i++)
 	  if(!used[ans[i].idx])
-		Q.push(data(CC[i],i));
+		Q.push(minDis(CC[i],i));
 
 	while(Q.size())
 	{
@@ -53,7 +53,7 @@ void MST::fill_greedy(vector<Block> &ans,bool *used)
 			if(ans[a1*N+b1].idx==-1)
 			{
 				CC[a1*N+b1]++;
-				Q.push(data(CC[a1*N+b1],a1*N+b1)); 
+				Q.push(minDis(CC[a1*N+b1],a1*N+b1)); 
 			}
 		}
 
