@@ -50,6 +50,17 @@ We developed this **Jigsaw-Solver** for the following contest : http://www.robot
 ALGORITHM-USED
 ===============
 
+We have used two methods to solve the Jigsaw.
+1 . First One is an MST solver, which basically makes a weighted graph(based on gradient difference) between the pieces, and picks out a **Planar Minimum Spanning Tree**.
+2 . Second One uses **Genetic Algorithm** to solve the **Jigsaw Puzzle** . 
+
+As, the **Genetic Algorithm** takes much time to converge to the Solution ( but provides better results ). We Run the **MST Solver** if the Number of Jigsaw Pieces are Over 400 , else we run the **Genetic Algorithm Solver** . 
+
+FUTURE PLANS
+============
+
+We would love to have people contribute to this project.
+One of the things on our mind is to have more methods to Solve the Jigsaw, and also Run all these Parallely and pick out the best solution.
 
 NOTE
 ====
