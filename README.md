@@ -1,7 +1,7 @@
 Jigsaw-Solver
 =============
 
-A jigsaw puzzle solver for randomly shuffled rectangular shaped images.
+A jigsaw puzzle solver for randomly shuffled square shaped images which can be fit into a square grid to retrieve the original image.
 
 System-Requirements
 -------------------
