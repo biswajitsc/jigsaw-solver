@@ -88,7 +88,7 @@ int main(int argc, char* argv[])
     img=cvLoadImage(argv[1]);
     if(img==0)
     {
-        cout<<argv[1]<<": File not found."<<endl;
+        cerr<<argv[1]<<": File not found."<<endl;
         exit(1);
     }
 
@@ -98,7 +98,7 @@ int main(int argc, char* argv[])
     
     if(len<1)
     {
-        cerr<<"Invalid Side Length. "<<endl<<"Aborting "<<endl;
+        cerr<<"Invalid side length."<<endl;
         exit(1);
     }
 
@@ -133,6 +133,7 @@ int main(int argc, char* argv[])
         cvSaveImage(filename,scrambled);
         printf("Generated %s\n",fileid);
     }
-    cerr<<"Picture Broken into total "<<n*n<<" pieces."<<endl;
+    cout<<"Picture Broken into total "<<n*n<<" pieces."<<endl<<endl;
+    cout<<"N = "<<n<<endl<<endl;
     return 0;
 }

@@ -64,6 +64,9 @@ $ ./generate_pieces generated_pieces/mona_lisa.jpg
 Image dimensions: 409 410
 Enter side length of square piece: 30
 Picture Broken into total 169 pieces.
+
+N = 13
+
 $ ./solver
 Enter The Value of N in NxN : 
 13
