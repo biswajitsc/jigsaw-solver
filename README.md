@@ -53,6 +53,23 @@ Once we have the scrambled jigsaw pieces, we can use the jigsaw solving code to 
 
 4. Both the scrambled and the solved images would be generated and saved in files ```scrambled_image.jpg``` and ```solved_image.jpg``` respectively.
 
+Example Run
+-----------
+```bash
+$ chmod +x compile_GeneratePieces.sh
+$ ./compile_GeneratePieces.sh
+$ chmod +x compile_solver.sh
+$ ./compile_solver.sh
+$ ./generate_pieces generated_pieces/mona_lisa.jpg
+Image dimensions: 409 410
+Enter side length of square piece: 30
+Picture Broken into total 169 pieces.
+$ ./solver
+Enter The Value of N in NxN : 
+13
+$
+```
+
 Algorithms used
 ---------------
 
@@ -63,6 +80,13 @@ We have used two methods to solve the problem.
 2 . The second method is based on a **Genetic Algorithm**. This method selects the best images from a pool of *evoluting* images based on a fitness function and *crosses* them together. The crossing is performed in a way so as to improve the resulting image.
 
 Since, the Genetic Algorithm takes much time to converge to the solution ( but provides much better results ), we run the MST Solver if the number of jigsaw pieces are over 400. Otherwise we run the Genetic Algorithm for smaller datasets. 
+
+Experimental Results and Observations
+-------------------------------------
+* The Genetic Algorithm works well for images of smaller dimension i.e. lesser resolution.
+* The MST Algorithm works well for images of larger dimensions often giving perfect results.
+* The application as a whole works well for images of higher resolution.
+* The application doesn't work well for images of smaller resolution divided into a large number of pieces, often producing unsatisfactory results.
 
 Authors
 -------

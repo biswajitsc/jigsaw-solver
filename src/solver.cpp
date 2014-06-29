@@ -68,13 +68,13 @@ int main(int argc, char *argv[])
     vector<Block> scrambled=pieces.getScrambledImage();
     saveResult(scrambled,pieces.height, pieces.width,"scrambled_image.jpg");
 
-    if(N>20)
+    if(N>15)
     {
         MST mst(N,&pieces);
         ans=mst.get_mst(pieces.height,pieces.width);
         saveResult(ans,pieces.height,pieces.width,"solved_image.jpg");
     }
-    else if(N<=20)
+    else
     {
         GA ga(N,&pieces);
         ans=ga.runAlgo(pieces.height,pieces.width);
