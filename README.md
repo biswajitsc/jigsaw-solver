@@ -96,9 +96,9 @@ Authors
 
 The whole project was contributed to by the following people.
 
-1. Anmol Gulati , IIT Kharagpur
-2. Biswajit Paria , IIT Kharagpur
-3. Kumar Krishna Aggarwal, IIT Kharagpur
+1. [Anmol Gulati](https://github.com/anmol01gulati) , IIT Kharagpur
+2. [Biswajit Paria](https://github.com/biswajitsc) , IIT Kharagpur
+3. [Kumar Krishna Agrawal](https://github.com/kumarkrishna), IIT Kharagpur
 
 This Jigsaw-Solver was developed for the following contest: [SUDOCODE](http://www.robotix.in/events/event/sudocode). We were place 1st in this national level contest.
 
